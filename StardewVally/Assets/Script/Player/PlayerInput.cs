@@ -12,7 +12,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        InputX = Input.GetAxis(HorizontaolAxisName);
-        InputY = Input.GetAxis(VerticalAxisName);
+        InputX = Input.GetAxisRaw(HorizontaolAxisName);
+        InputY = Input.GetAxisRaw(VerticalAxisName);
     }
 }
