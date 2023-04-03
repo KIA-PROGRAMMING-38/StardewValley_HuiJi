@@ -16,6 +16,7 @@ public class PlayerAnimationManager : MonoBehaviour
 {
     private PlayerController _playerController;
     private Animator _animator;
+    
     private void Awake()
     {
         _playerController = GetComponentInParent<PlayerController>();
@@ -24,23 +25,32 @@ public class PlayerAnimationManager : MonoBehaviour
     
     void Update()
     {
-        switch (_playerController.CurrentDirection)
+        if (_playerController.IsMove)
         {
-            case Direction.Down:
-                _animator.Play(PlayerAnimID.RUN_DOWN);
-                break;
+            switch (_playerController.CurrentDirection)
+            {
+                case Direction.Down:
+                    _animator.Play(PlayerAnimID.RUN_DOWN);
+                    break;
             
-            case Direction.Up:
-                _animator.Play(PlayerAnimID.RUN_UP);
-                break;
+                case Direction.Up:
+                    _animator.Play(PlayerAnimID.RUN_UP);
+                    break;
             
-            case Direction.Left:
-                _animator.Play(PlayerAnimID.RUN_LEFT);
-                break;
+                case Direction.Left:
+                    _animator.Play(PlayerAnimID.RUN_LEFT);
+                    break;
             
-            case Direction.Right:
-                _animator.Play(PlayerAnimID.RUN_RIGHT);
-                break;
-        } 
+                case Direction.Right:
+                    _animator.Play(PlayerAnimID.RUN_RIGHT);
+                    break;
+            }
+
+            if (!_playerController.IsMove)
+            {
+                _animator.SetBool("isMove", false);
+            }
+        }
+        
     }
 }
