@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour
     private PlayerFSM _fsm;
     public Direction CurrentDirection { get; private set; }
 
-    [SerializeField] 
+    // animator를 집어넣을수 있게 해줬네..? 왜이렇게 했더라?? 어쨋든 Tool도 Body 하위 오브젝트니까 Body를 실행시키면 Tool도 실행될것.
+    [SerializeField]
     private Animator _animator;
     
     private PlayerInput _playerInput; 
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _fsm = new PlayerFSM(gameObject);
+        // PlayerController의 speed를 PlayerFSM의 speed로 설정해준다.
         _fsm.speed = this.speed;
         _fsm.animator = this._animator;
     }
@@ -45,50 +47,5 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         _fsm.Update();
-        // CurrentDirectionUpdate();
-        // isMoveUpdate();
     }
-
-    private void FixedUpdate()
-    {
-        
-    }
-
-    private void CurrentDirectionUpdate()
-    {
-        if (_playerInput.InputY < 0)
-        {
-            CurrentDirection = Direction.Down;
-        }
-        
-        else if (_playerInput.InputY > 0)
-        {
-            CurrentDirection = Direction.Up;
-        }
-        
-        else if (_playerInput.InputX < 0)
-        {
-            CurrentDirection = Direction.Left;
-        }
-        
-        else if (_playerInput.InputX > 0)
-        {
-            CurrentDirection = Direction.Right;
-        }
-    }
-
-    private void isMoveUpdate()
-    {
-        if (_playerInput.InputX == 0 && _playerInput.InputY == 0)
-        {
-            IsMove = false;
-        }
-        
-        else
-        {
-            IsMove = true;
-        }
-    }
-    
-    
 }
