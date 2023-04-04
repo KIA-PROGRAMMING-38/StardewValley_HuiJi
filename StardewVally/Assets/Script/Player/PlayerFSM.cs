@@ -9,8 +9,8 @@ public class PlayerFSM : FiniteStateMachine
     {
         Idle,
         Run,
-        Pick,
         UsePickaxe,
+        Pick,
         UseWateringCan,
         Attack
     }
@@ -19,6 +19,7 @@ public class PlayerFSM : FiniteStateMachine
     {
         _states.Add(new PlayerIdleState());
         _states.Add(new PlayerRunState());
+        _states.Add(new UsePickaxeState());
 
         CurrentState = _states[0];
     }
