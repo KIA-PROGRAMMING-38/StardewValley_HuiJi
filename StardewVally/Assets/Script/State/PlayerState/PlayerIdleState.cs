@@ -18,10 +18,10 @@ public class PlayerIdleState : State
         }
         
         // UsePickaxe로 전환
-        if (Input.GetMouseButton(0))
-        {
-            machine.SetNextState((int)PlayerFSM.PlayerState.UsePickaxe);
-            Debug.Log("마우스를 누름");
-        }
+        // if (Input.GetMouseButton(0))
+        // {
+        //     machine.SetNextState((int)PlayerFSM.PlayerState.UsePickaxe);
+        //     Debug.Log("마우스를 누름");
+        // }
     }
 }

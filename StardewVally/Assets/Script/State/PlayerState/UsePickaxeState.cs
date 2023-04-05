@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UsePickaxeState : State
 {
+    
     private float _elapsedTime;
     private bool animationOver;
     public override void OnEnter( FiniteStateMachine machine )
