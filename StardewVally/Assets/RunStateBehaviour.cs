@@ -45,11 +45,4 @@ public class RunStateBehaviour : StateMachineBehaviour
             animator.SetFloat("Vertical", 0);
         }
     }
-
-    
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        
-    }
-    
 }
