@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        
         if (Input.GetMouseButton(0))
         {
             mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -71,6 +72,14 @@ public class PlayerController : MonoBehaviour
                     _animator.SetFloat("MouseHorizontal", 0);
                 }
             }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            _animator.SetTrigger("Idle");
+            _animator.SetFloat("MouseVertical", 0);
+            _animator.SetFloat("MouseHorizontal", 0);
+            
         }
     }
 }
