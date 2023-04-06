@@ -2,15 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    private float mousePositionX;
-    private float mousePositionY;
+    private Vector3 mousePosition;
+    // 메인 카메라
+    public Camera mainCamera;
+    // 방향
+    private Vector3 dir;
 
-    // animator를 집어넣을수 있게 해줬네..? 왜이렇게 했더라?? 어쨋든 Tool도 Body 하위 오브젝트니까 Body를 실행시키면 Tool도 실행될것.
     [SerializeField]
     private Animator _animator;
 
@@ -18,26 +22,55 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
-        
-        // if (Input.GetMouseButton(0))
-        // {
-        //     mousePositionX = Input.mousePosition.x;
-        //     mousePositionY = Input.mousePosition.y;
-        //
-        //     Debug.Log(mousePositionX);
-        //     Debug.Log(gameObject.transform.localPosition.x);
-        //     // Left
-        //     if (mousePositionX < gameObject.transform.position.x)
-        //     {
-        //         Debug.Log("좌로 클릭");
-        //         _animator.SetFloat("Horizontal", mousePositionX);
-        //     }
-        // }
-        
+        if (Input.GetMouseButton(0))
+        {
+            mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            // Left
+            if (MathF.Abs(mousePosition.x) > MathF.Abs(mousePosition.y))
+            {
+                if (mousePosition.x < 0)
+                {
+                    _animator.SetFloat("MouseHorizontal", mousePosition.x);
+                    _animator.SetFloat("MouseVertical", 0);
+                }
+            }
+
+            // Right
+            if (MathF.Abs(mousePosition.x) > MathF.Abs(mousePosition.y))
+            {
+                if (mousePosition.x > 0)
+                {
+                    _animator.SetFloat("MouseHorizontal", mousePosition.x);
+                    _animator.SetFloat("MouseVertical", 0);
+                }
+            }
+            
+            // Down
+            if (MathF.Abs(mousePosition.x) < MathF.Abs(mousePosition.y))
+            {
+                if (mousePosition.y < 0)
+                {
+                    _animator.SetFloat("MouseVertical", mousePosition.y);
+                    _animator.SetFloat("MouseHorizontal", 0);
+                }
+            }
+           
+            
+            // Up
+            if (MathF.Abs(mousePosition.x) < MathF.Abs(mousePosition.y))
+            {
+                if (mousePosition.y > 0)
+                {
+                    _animator.SetFloat("MouseVertical", mousePosition.y);
+                    _animator.SetFloat("MouseHorizontal", 0);
+                }
+            }
+        }
     }
 }
