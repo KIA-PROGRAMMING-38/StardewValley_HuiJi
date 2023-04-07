@@ -9,67 +9,116 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    private Vector3 mousePosition;
+    
     // 메인 카메라
-    public Camera mainCamera;
-    // 방향
-    private Vector3 dir;
+    private Camera _mainCamera;
+    
+    // 초기 마우스 포지션
+    private Vector3 mousePosition;
+    // 마우스 월드 포지션
+    private Vector2 _mouseWorldPosition;
+    
+    // 마우스의 방향
+    private Vector2 _cursorDirection;
 
     [SerializeField]
     private Animator _animator;
 
-    [Range(0,10)] public float speed;
-
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
+        _mainCamera = Camera.main;
     }
 
+    
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Vector3Int cellPosition = MapManager.Instance.GetCellPositionFromWorld(transform.position);
+            Debug.Log($"�÷��̾��� ���� ��ġ�� �� ��ǥ�� : {cellPosition}");
+        }
         
         if (Input.GetMouseButton(0))
         {
-            mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition = Input.mousePosition;
+            _mouseWorldPosition = _mainCamera.ScreenToWorldPoint(mousePosition);
 
-            // Left
-            if (MathF.Abs(mousePosition.x) > MathF.Abs(mousePosition.y))
-            {
-                if (mousePosition.x < 0)
-                {
-                    _animator.SetFloat("MouseHorizontal", mousePosition.x);
-                    _animator.SetFloat("MouseVertical", 0);
-                }
-            }
+            _cursorDirection = _mouseWorldPosition - (Vector2)transform.position;
+
+            float absXValue = Mathf.Abs(_cursorDirection.x);
+            float absYValue = Mathf.Abs(_cursorDirection.y);
 
             // Right
-            if (MathF.Abs(mousePosition.x) > MathF.Abs(mousePosition.y))
+            // 1,4사분면
+            if (_cursorDirection.y > 0)
             {
-                if (mousePosition.x > 0)
+                // 1사분면
+                if (_cursorDirection.x >= 0)
                 {
-                    _animator.SetFloat("MouseHorizontal", mousePosition.x);
-                    _animator.SetFloat("MouseVertical", 0);
+                    // Right
+                    if (absXValue >= absYValue)
+                    {
+                        _animator.Play("Hoe_Right");
+                    }
+
+                    // Up
+                    else
+                    {
+                        _animator.Play("Hoe_Up");
+                    }
+                }
+
+                // 4사분면
+                else
+                {
+                    // Left
+                    if (absXValue >= absYValue)
+                    {
+                        _animator.Play("Hoe_Left");
+                    }
+
+                    // Up
+                    else
+                    {
+                        _animator.Play("Hoe_Up");
+                    }
                 }
             }
-            
-            // Down
-            if (MathF.Abs(mousePosition.x) < MathF.Abs(mousePosition.y))
+
+            // 2, 3사분면
+            else
             {
-                if (mousePosition.y < 0)
+                // 2사분면
+                if (_cursorDirection.x >= 0)
                 {
-                    _animator.SetFloat("MouseVertical", mousePosition.y);
-                    _animator.SetFloat("MouseHorizontal", 0);
+                    // Right
+                    if (absXValue >= absYValue)
+                    {
+                        _animator.Play("Hoe_Right");
+                    }
+
+                    // Down
+                    else
+                    {
+                        _animator.Play("Hoe_Down");
+                    }
                 }
-            }
-           
-            
-            // Up
-            if (MathF.Abs(mousePosition.x) < MathF.Abs(mousePosition.y))
-            {
-                if (mousePosition.y > 0)
+
+                // 3사분면
+                else
                 {
-                    _animator.SetFloat("MouseVertical", mousePosition.y);
-                    _animator.SetFloat("MouseHorizontal", 0);
+                    // Left
+                    if (absXValue >= absYValue)
+                    {
+                        _animator.Play("Hoe_Left");
+                    }
+
+                    // Down
+                    else
+                    {
+                        _animator.Play("Hoe_Down");
+                    }
                 }
             }
         }
@@ -77,9 +126,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             _animator.SetTrigger("Idle");
-            _animator.SetFloat("MouseVertical", 0);
-            _animator.SetFloat("MouseHorizontal", 0);
-            
         }
     }
 }
